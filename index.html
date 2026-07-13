@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>暑假学习管理计划 - 防摆烂系统</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --primary: #4F46E5;
+            --primary-light: #818CF8;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+            --bg: #F8FAFC;
+            --card: #FFFFFF;
+            --text: #1E293B;
+            --text-light: #64748B;
+            --border: #E2E8F0;
+            --shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1);
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            padding: 30px;
+            border-radius: 16px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 300px;
+            height: 300px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+        }
+        
+        header h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        header p {
+            opacity: 0.9;
+            font-size: 14px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .stat-card {
+            background: var(--card);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: transform 0.2s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-2px);
+        }
+        
+        .stat-value {
+            font-size: 32px;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-light);
+            margin-top: 4px;
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+        
+        .tab-btn {
+            padding: 10px 20px;
+            border: none;
+            background: var(--card);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-light);
+            transition: all 0.2s;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .tab-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .tab-btn:hover:not(.active) {
+            background: var(--border);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .card {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #4338CA;
+        }
+        
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+        
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text);
+        }
+        
+        .btn-outline:hover {
+            background: var(--bg);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        th {
+            font-weight: 600;
+            font-size: 12px;
+            text-transform: uppercase;
+            color: var(--text-light);
+            letter-spacing: 0.5px;
+        }
+        
+        tr:hover {
+            background: var(--bg);
+        }
+        
+        .task-checkbox {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: var(--success);
+        }
+        
+        .task-name {
+            font-weight: 500;
+        }
+        
+        .task-type {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .type-阅读 { background: #DBEAFE; color: #1E40AF; }
+        .type-练习 { background: #FEF3C7; color: #92400E; }
+        .type-口语 { background: #D1FAE5; color: #065F46; }
+        .type-制作 { background: #EDE9FE; color: #5B21B6; }
+        .type-实验 { background: #FFE4E6; color: #9F1239; }
+        .type-创作 { background: #FCE7F3; color: #9D174D; }
+        .type-运动 { background: #CCFBF1; color: #115E59; }
+        .type-娱乐 { background: #FEE2E2; color: #991B1B; }
+        
+        .time-badge {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 8px 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success), #34D399);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+        
+        .week-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 16px;
+        }
+        
+        .week-day {
+            background: var(--bg);
+            padding: 16px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+        }
+        
+        .week-day-header {
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--primary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .week-day-tasks {
+            font-size: 13px;
+        }
+        
+        .week-day-task {
+            padding: 6px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .week-day-task.completed {
+            text-decoration: line-through;
+            color: var(--text-light);
+        }
+        
+        .form-group {
+            margin-bottom: 16px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-light);
+        }
+        
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.2s;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+        
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-overlay.active {
+            display: flex;
+        }
+        
+        .modal {
+            background: var(--card);
+            border-radius: 16px;
+            padding: 32px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+        }
+        
+        .modal-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            margin-top: 24px;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-light);
+        }
+        
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        
+        .badge-success { background: #D1FAE5; color: #065F46; }
+        .badge-warning { background: #FEF3C7; color: #92400E; }
+        .badge-danger { background: #FEE2E2; color: #991B1B; }
+        
+        @media print {
+            .no-print { display: none !important; }
+            body { background: white; }
+            .card { box-shadow: none; border: 1px solid #ddd; break-inside: avoid; }
+        }
+        
+        @media (max-width: 768px) {
+            .container { padding: 12px; }
+            header { padding: 20px; }
+            header h1 { font-size: 22px; }
+            .stats-bar { grid-template-columns: repeat(2, 1fr); }
+            table { font-size: 13px; }
+            th, td { padding: 8px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📚 暑假学习管理计划</h1>
+            <p>防摆烂系统 · 让孩子学会自主规划时间</p>
+        </header>
+        
+        <div class="stats-bar">
+            <div class="stat-card">
+                <div class="stat-value" id="totalTasks">0</div>
+                <div class="stat-label">总任务数</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="completedTasks">0</div>
+                <div class="stat-label">已完成</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="completionRate">0%</div>
+                <div class="stat-label">完成率</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="streakDays">0</div>
+                <div class="stat-label">连续天数</div>
+            </div>
+        </div>
+        
+        <div class="tabs no-print">
+            <button class="tab-btn active" onclick="switchTab('daily')">📅 每日计划</button>
+            <button class="tab-btn" onclick="switchTab('weekly')">📊 每周总结</button>
+            <button class="tab-btn" onclick="switchTab('tasks')">✅ 任务清单</button>
+            <button class="tab-btn" onclick="switchTab('settings')">⚙️ 设置</button>
+        </div>
+        
+        <!-- 每日计划 -->
+        <div id="daily-tab" class="tab-content active">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">📅 今日计划</h2>
+                    <div class="no-print">
+                        <button class="btn btn-primary" onclick="openAddTaskModal()">+ 添加任务</button>
+                        <button class="btn btn-outline" onclick="printPage()">🖨️ 打印</button>
+                    </div>
+                </div>
+                
+                <div class="progress-bar">
+                    <div class="progress-fill" id="dailyProgress" style="width: 0%"></div>
+                </div>
+                <p style="font-size: 12px; color: var(--text-light); margin-bottom: 16px;">
+                    今日进度：<span id="dailyProgressText">0/0</span>
+                </p>
+                
+                <div id="dailySchedule"></div>
+            </div>
+        </div>
+        
+        <!-- 每周总结 -->
+        <div id="weekly-tab" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">📊 本周概览</h2>
+                    <div class="no-print">
+                        <button class="btn btn-outline" onclick="generateWeeklyReport()">📝 生成周报</button>
+                    </div>
+                </div>
+                <div class="week-grid" id="weekGrid"></div>
+            </div>
+        </div>
+        
+        <!-- 任务清单 -->
+        <div id="tasks-tab" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">✅ 全部任务</h2>
+                    <div class="no-print">
+                        <button class="btn btn-primary" onclick="openAddTaskModal()">+ 添加任务</button>
+                        <button class="btn btn-outline" onclick="clearCompleted()">清除已完成</button>
+                    </div>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>状态</th>
+                                <th>日期</th>
+                                <th>任务名称</th>
+                                <th>类型</th>
+                                <th>预计时间</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="allTasksTable"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 设置 -->
+        <div id="settings-tab" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">⚙️ 基本设置</h2>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>孩子姓名</label>
+                        <input type="text" id="childName" placeholder="输入孩子姓名" onchange="saveSettings()">
+                    </div>
+                    <div class="form-group">
+                        <label>年级</label>
+                        <select id="grade" onchange="saveSettings()">
+                            <option value="">选择年级</option>
+                            <option value="一年级">一年级</option>
+                            <option value="二年级">二年级</option>
+                            <option value="三年级">三年级</option>
+                            <option value="四年级">四年级</option>
+                            <option value="五年级">五年级</option>
+                            <option value="六年级">六年级</option>
+                            <option value="初一">初一</option>
+                            <option value="初二">初二</option>
+                            <option value="初三">初三</option>
+                            <option value="高一">高一</option>
+                            <option value="高二">高二</option>
+                            <option value="高三">高三</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>暑假开始日期</label>
+                        <input type="date" id="startDate" onchange="saveSettings()">
+                    </div>
+                    <div class="form-group">
+                        <label>暑假结束日期</label>
+                        <input type="date" id="endDate" onchange="saveSettings()">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>每日作息提醒</label>
+                    <div class="form-row">
+                        <input type="time" id="wakeTime" value="08:00" onchange="saveSettings()">
+                        <input type="time" id="bedTime" value="21:00" onchange="saveSettings()">
+                    </div>
+                </div>
+                <div style="margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--border);">
+                    <button class="btn btn-danger" onclick="resetAllData()">🗑️ 重置所有数据</button>
+                    <button class="btn btn-outline" onclick="exportData()" style="margin-left: 12px;">💾 导出数据</button>
+                    <button class="btn btn-outline" onclick="document.getElementById('importFile').click()" style="margin-left: 12px;">📂 导入数据</button>
+                    <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importData(event)">
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">🎯 快速生成计划</h2>
+                </div>
+                <p style="font-size: 14px; color: var(--text-light); margin-bottom: 16px;">
+                    使用 AI 一键生成个性化暑假学习计划，根据你的孩子信息自动匹配任务类型和时间分配。
+                </p>
+                <div class="form-group">
+                    <label>粘贴你的需求描述（或留空使用默认模板）</label>
+                    <textarea id="aiPrompt" rows="4" placeholder="例如：我女儿 10 岁，读五年级，需要包含语文大阅读、数学思维练习、英语对话、科学 PPT 演示、美术创意展示等任务..." style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; resize: vertical;"></textarea>
+                </div>
+                <button class="btn btn-primary" onclick="generateAIPlan()">✨ 生成计划</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 添加任务弹窗 -->
+    <div class="modal-overlay" id="addTaskModal">
+        <div class="modal">
+            <h3 class="modal-title">➕ 添加新任务</h3>
+            <div class="form-group">
+                <label>任务名称</label>
+                <input type="text" id="taskName" placeholder="例如：语文大阅读">
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>任务类型</label>
+                    <select id="taskType">
+                        <option value="阅读">阅读</option>
+                        <option value="练习">练习</option>
+                        <option value="口语">口语</option>
+                        <option value="制作">制作</option>
+                        <option value="实验">实验</option>
+                        <option value="创作">创作</option>
+                        <option value="运动">运动</option>
+                        <option value="娱乐">娱乐</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>预计时间（分钟）</label>
+                    <input type="number" id="taskDuration" value="30" min="5" max="180">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>执行时段</label>
+                <select id="taskPeriod">
+                    <option value="上午">上午（08:00-12:00）</option>
+                    <option value="下午">下午（14:00-17:00）</option>
+                    <option value="晚上">晚上（19:00-21:00）</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>重复周期</label>
+                <select id="taskRepeat">
+                    <option value="daily">每天</option>
+                    <option value="weekdays">工作日</option>
+                    <option value="weekend">周末</option>
+                    <option value="once">仅一次</option>
+                </select>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-outline" onclick="closeAddTaskModal()">取消</button>
+                <button class="btn btn-primary" onclick="addTask()">添加</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 数据存储
+        let appData = {
+            settings: {
+                childName: '',
+                grade: '',
+                startDate: '',
+                endDate: '',
+                wakeTime: '08:00',
+                bedTime: '21:00'
+            },
+            tasks: [],
+            completedTasks: {}
+        };
+        
+        // 初始化
+        function init() {
+            loadData();
+            renderAll();
+            setupEventListeners();
+        }
+        
+        // 加载数据
+        function loadData() {
+            const saved = localStorage.getItem('summerLearningPlan');
+            if (saved) {
+                try {
+                    appData = JSON.parse(saved);
+                } catch (e) {
+                    console.error('加载数据失败:', e);
+                }
+            } else {
+                // 默认示例数据
+                generateDefaultTasks();
+            }
+            updateSettingsUI();
+        }
+        
+        // 保存数据
+        function saveData() {
+            localStorage.setItem('summerLearningPlan', JSON.stringify(appData));
+        }
+        
+        // 生成默认任务
+        function generateDefaultTasks() {
+            const today = new Date();
+            const defaultTasks = [
+                { name: '语文大阅读', type: '阅读', duration: 30, period: '上午', repeat: 'daily' },
+                { name: '数学思维练习', type: '练习', duration: 20, period: '上午', repeat: 'daily' },
+                { name: '英语对话', type: '口语', duration: 15, period: '上午', repeat: 'daily' },
+                { name: '科学 PPT 演示', type: '制作', duration: 40, period: '下午', repeat: 'weekdays' },
+                { name: '数学实验', type: '实验', duration: 30, period: '下午', repeat: 'weekdays' },
+                { name: '美术创意展示', type: '创作', duration: 45, period: '下午', repeat: 'weekend' },
+                { name: '户外运动', type: '运动', duration: 30, period: '晚上', repeat: 'daily' },
+                { name: '纪录片/电影', type: '娱乐', duration: 30, period: '晚上', repeat: 'weekend' }
+            ];
+            
+            appData.tasks = defaultTasks;
+            appData.completedTasks = {};
+            saveData();
+        }
+        
+        // 渲染所有视图
+        function renderAll() {
+            renderDailySchedule();
+            renderWeeklyOverview();
+            renderAllTasks();
+            updateStats();
+        }
+        
+        // 渲染每日计划
+        function renderDailySchedule() {
+            const container = document.getElementById('dailySchedule');
+            const periods = ['上午', '下午', '晚上'];
+            const periodTimes = {
+                '上午': '08:00 - 12:00',
+                '下午': '14:00 - 17:00',
+                '晚上': '19:00 - 21:00'
+            };
+            
+            let html = '';
+            
+            periods.forEach(period => {
+                const periodTasks = appData.tasks.filter(t => t.period === period);
+                const completedCount = periodTasks.filter(t => appData.completedTasks[t.name]).length;
+                const totalCount = periodTasks.length;
+                
+                html += `
+                    <div style="margin-bottom: 24px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                            <h3 style="font-size: 16px; font-weight: 600;">${period}</h3>
+                            <span style="font-size: 12px; color: var(--text-light);">${periodTimes[period]}</span>
+                        </div>
+                        ${periodTasks.length > 0 ? `
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th style="width: 40px;">完成</th>
+                                        <th>任务名称</th>
+                                        <th>类型</th>
+                                        <th>时间</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${periodTasks.map(task => `
+                                        <tr>
+                                            <td>
+                                                <input type="checkbox" 
+                                                       class="task-checkbox" 
+                                                       ${appData.completedTasks[task.name] ? 'checked' : ''}
+                                                       onchange="toggleTask('${task.name}')">
+                                            </td>
+                                            <td class="task-name">${task.name}</td>
+                                            <td><span class="task-type type-${task.type}">${task.type}</span></td>
+                                            <td class="time-badge">${task.duration} 分钟</td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        ` : '<p style="color: var(--text-light); font-size: 13px; font-style: italic;">暂无安排</p>'}
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html || '<div class="empty-state"><div class="empty-state-icon">📋</div><p>还没有添加任何任务</p><p style="font-size: 13px; margin-top: 8px;">点击"添加任务"开始制定你的暑假计划吧！</p></div>';
+            
+            updateDailyProgress();
+        }
+        
+        // 更新每日进度
+        function updateDailyProgress() {
+            const total = appData.tasks.length;
+            const completed = Object.values(appData.completedTasks).filter(v => v).length;
+            const rate = total > 0 ? Math.round((completed / total) * 100) : 0;
+            
+            document.getElementById('dailyProgress').style.width = rate + '%';
+            document.getElementById('dailyProgressText').textContent = `${completed}/${total}`;
+        }
+        
+        // 渲染每周概览
+        function renderWeeklyOverview() {
+            const container = document.getElementById('weekGrid');
+            const days = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
+            
+            let html = '';
+            days.forEach((day, index) => {
+                const dayTasks = appData.tasks.filter((t, i) => i % 7 === index);
+                const completedCount = dayTasks.filter(t => appData.completedTasks[t.name]).length;
+                const totalCount = dayTasks.length;
+                const isWeekend = index >= 5;
+                
+                html += `
+                    <div class="week-day">
+                        <div class="week-day-header">
+                            <span>${day}${isWeekend ? ' 🌟' : ''}</span>
+                            <span class="badge ${completedCount === totalCount && totalCount > 0 ? 'badge-success' : 'badge-warning'}">
+                                ${completedCount}/${totalCount}
+                            </span>
+                        </div>
+                        <div class="week-day-tasks">
+                            ${dayTasks.length > 0 ? dayTasks.map(task => `
+                                <div class="week-day-task ${appData.completedTasks[task.name] ? 'completed' : ''}">
+                                    <span>${task.name}</span>
+                                    <span style="font-size: 11px; color: var(--text-light);">${task.duration}min</span>
+                                </div>
+                            `).join('') : '<p style="font-size: 12px; color: var(--text-light);">无安排</p>'}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+        
+        // 渲染全部任务
+        function renderAllTasks() {
+            const tbody = document.getElementById('allTasksTable');
+            
+            if (appData.tasks.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 40px; color: var(--text-light);">暂无任务</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = appData.tasks.map((task, index) => `
+                <tr>
+                    <td>
+                        <input type="checkbox" 
+                               class="task-checkbox" 
+                               ${appData.completedTasks[task.name] ? 'checked' : ''}
+                               onchange="toggleTask('${task.name}')">
+                    </td>
+                    <td>${task.period}</td>
+                    <td class="task-name">${task.name}</td>
+                    <td><span class="task-type type-${task.type}">${task.type}</span></td>
+                    <td class="time-badge">${task.duration} 分钟</td>
+                    <td>
+                        <button class="btn btn-outline" onclick="editTask(${index})" style="padding: 4px 8px; font-size: 12px;">编辑</button>
+                        <button class="btn btn-danger" onclick="deleteTask(${index})" style="padding: 4px 8px; font-size: 12px;">删除</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+        
+        // 更新统计
+        function updateStats() {
+            const total = appData.tasks.length;
+            const completed = Object.values(appData.completedTasks).filter(v => v).length;
+            const rate = total > 0 ? Math.round((completed / total) * 100) : 0;
+            
+            document.getElementById('totalTasks').textContent = total;
+            document.getElementById('completedTasks').textContent = completed;
+            document.getElementById('completionRate').textContent = rate + '%';
+            
+            // 计算连续天数（简化版）
+            const streak = calculateStreak();
+            document.getElementById('streakDays').textContent = streak;
+        }
+        
+        // 计算连续完成天数
+        function calculateStreak() {
+            // 简化逻辑：如果今天有完成任务，计为 1 天
+            const todayCompleted = appData.tasks.some(t => appData.completedTasks[t.name]);
+            return todayCompleted ? 1 : 0;
+        }
+        
+        // 切换任务完成状态
+        function toggleTask(taskName) {
+            appData.completedTasks[taskName] = !appData.completedTasks[taskName];
+            saveData();
+            renderAll();
+        }
+        
+        // 打开添加任务弹窗
+        function openAddTaskModal() {
+            document.getElementById('addTaskModal').classList.add('active');
+            document.getElementById('taskName').focus();
+        }
+        
+        // 关闭添加任务弹窗
+        function closeAddTaskModal() {
+            document.getElementById('addTaskModal').classList.remove('active');
+            clearTaskForm();
+        }
+        
+        // 清空表单
+        function clearTaskForm() {
+            document.getElementById('taskName').value = '';
+            document.getElementById('taskType').value = '阅读';
+            document.getElementById('taskDuration').value = '30';
+            document.getElementById('taskPeriod').value = '上午';
+            document.getElementById('taskRepeat').value = 'daily';
+        }
+        
+        // 添加任务
+        function addTask() {
+            const name = document.getElementById('taskName').value.trim();
+            const type = document.getElementById('taskType').value;
+            const duration = parseInt(document.getElementById('taskDuration').value);
+            const period = document.getElementById('taskPeriod').value;
+            const repeat = document.getElementById('taskRepeat').value;
+            
+            if (!name) {
+                alert('请输入任务名称');
+                return;
+            }
+            
+            if (appData.tasks.find(t => t.name === name)) {
+                alert('该任务已存在');
+                return;
+            }
+            
+            appData.tasks.push({ name, type, duration, period, repeat });
+            saveData();
+            renderAll();
+            closeAddTaskModal();
+        }
+        
+        // 删除任务
+        function deleteTask(index) {
+            if (confirm('确定删除这个任务吗？')) {
+                const taskName = appData.tasks[index].name;
+                appData.tasks.splice(index, 1);
+                delete appData.completedTasks[taskName];
+                saveData();
+                renderAll();
+            }
+        }
+        
+        // 编辑任务
+        function editTask(index) {
+            const task = appData.tasks[index];
+            const newName = prompt('任务名称：', task.name);
+            if (newName && newName !== task.name) {
+                // 更新完成状态键名
+                if (appData.completedTasks[task.name]) {
+                    appData.completedTasks[newName] = true;
+                    delete appData.completedTasks[task.name];
+                }
+                appData.tasks[index].name = newName;
+                saveData();
+                renderAll();
+            }
+        }
+        
+        // 清除已完成任务
+        function clearCompleted() {
+            if (confirm('确定清除所有已完成的任务标记吗？')) {
+                appData.completedTasks = {};
+                saveData();
+                renderAll();
+            }
+        }
+        
+        // 生成周报
+        function generateWeeklyReport() {
+            const total = appData.tasks.length;
+            const completed = Object.values(appData.completedTasks).filter(v => v).length;
+            const rate = total > 0 ? Math.round((completed / total) * 100) : 0;
+            
+            const report = `
+📊 本周学习周报
+━━━━━━━━━━━━━━━━━━━━
+孩子：${appData.settings.childName || '未设置'}
+年级：${appData.settings.grade || '未设置'}
+
+📈 完成情况
+• 总任务数：${total}
+• 已完成：${completed}
+• 完成率：${rate}%
+
+🎯 建议
+${rate >= 80 ? '✅ 表现优秀！继续保持！' : rate >= 50 ? '👍 不错，再加把劲！' : '💪 加油，明天会更好！'}
+
+━━━━━━━━━━━━━━━━━━━━
+生成时间：${new Date().toLocaleString('zh-CN')}
+            `;
+            
+            alert(report);
+        }
+        
+        // 打印页面
+        function printPage() {
+            window.print();
+        }
+        
+        // 切换标签页
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            
+            document.getElementById(tabName + '-tab').classList.add('active');
+            event.target.classList.add('active');
+        }
+        
+        // 更新设置 UI
+        function updateSettingsUI() {
+            document.getElementById('childName').value = appData.settings.childName || '';
+            document.getElementById('grade').value = appData.settings.grade || '';
+            document.getElementById('startDate').value = appData.settings.startDate || '';
+            document.getElementById('endDate').value = appData.settings.endDate || '';
+            document.getElementById('wakeTime').value = appData.settings.wakeTime || '08:00';
+            document.getElementById('bedTime').value = appData.settings.bedTime || '21:00';
+        }
+        
+        // 保存设置
+        function saveSettings() {
+            appData.settings = {
+                childName: document.getElementById('childName').value,
+                grade: document.getElementById('grade').value,
+                startDate: document.getElementById('startDate').value,
+                endDate: document.getElementById('endDate').value,
+                wakeTime: document.getElementById('wakeTime').value,
+                bedTime: document.getElementById('bedTime').value
+            };
+            saveData();
+        }
+        
+        // 重置所有数据
+        function resetAllData() {
+            if (confirm('⚠️ 确定要重置所有数据吗？此操作不可恢复！')) {
+                localStorage.removeItem('summerLearningPlan');
+                appData = {
+                    settings: {
+                        childName: '',
+                        grade: '',
+                        startDate: '',
+                        endDate: '',
+                        wakeTime: '08:00',
+                        bedTime: '21:00'
+                    },
+                    tasks: [],
+                    completedTasks: {}
+                };
+                generateDefaultTasks();
+                renderAll();
+                updateSettingsUI();
+            }
+        }
+        
+        // 导出数据
+        function exportData() {
+            const dataStr = JSON.stringify(appData, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `暑假计划_${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+            URL.revokeObjectURL(url);
+        }
+        
+        // 导入数据
+        function importData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const imported = JSON.parse(e.target.result);
+                    if (imported.tasks && imported.settings) {
+                        appData = imported;
+                        saveData();
+                        renderAll();
+                        updateSettingsUI();
+                        alert('数据导入成功！');
+                    } else {
+                        alert('无效的数据格式');
+                    }
+                } catch (err) {
+                    alert('文件解析失败：' + err.message);
+                }
+            };
+            reader.readAsText(file);
+        }
+        
+        // 生成 AI 计划
+        function generateAIPlan() {
+            const prompt = document.getElementById('aiPrompt').value;
+            if (!prompt) {
+                alert('请先填写需求描述，或使用默认模板');
+                return;
+            }
+            
+            // 这里可以接入实际的 AI API
+            // 当前版本使用模拟数据
+            alert('✨ AI 计划生成功能\n\n在实际使用中，这里会调用 AI API 根据你的需求生成个性化计划。\n\n当前版本使用默认模板，你可以在"设置"中手动调整任务。');
+        }
+        
+        // 设置事件监听
+        function setupEventListeners() {
+            // 点击弹窗外部关闭
+            document.getElementById('addTaskModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeAddTaskModal();
+                }
+            });
+            
+            // ESC 键关闭弹窗
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closeAddTaskModal();
+                }
+            });
+        }
+        
+        // 初始化应用
+        init();
+    </script>
+</body>
+</html>
